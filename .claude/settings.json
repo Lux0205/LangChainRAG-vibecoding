@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(venv/Scripts/pip --version)",
+      "Bash(venv/Scripts/pip install *)",
+      "Bash(D:/python3.11/python.exe -m venv venv_new)",
+      "Bash(venv_new/Scripts/pip install *)",
+      "Bash(venv/Scripts/pip list *)",
+      "PowerShell(Start-Process -FilePath \"D:\\\\AAA\\\\MySQL\\\\mysql-8.0.46-winx64\\\\bin\\\\mysqld.exe\" -ArgumentList \"--defaults-file=D:\\\\AAA\\\\MySQL\\\\mysql-8.0.46-winx64\\\\my.ini\" -WindowStyle Hidden)",
+      "PowerShell(Test-NetConnection -ComputerName localhost -Port 3306 -InformationLevel Quiet)"
+    ],
+    "additionalDirectories": [
+      "D:\\AAA\\MySQL\\mysql-8.0.46-winx64"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "检测到 git commit 操作。提交前必须完成以下两项检查：\n1. 运行 /tester — 单元测试 + 覆盖率（目标 ≥ 60%）\n2. 运行 /quality-engineer — 代码质量 + 安全审计（高危问题 = 0）\n\n仅当两项都通过时，才允许提交。请先执行检查，再执行 commit。"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "任务即将结束。如果修改了代码文件，请确认：\n- 已运行 /tester 单元测试且全部通过\n- 已运行 /quality-engineer 质量审计且无高危问题\n\n如有未检查的修改，建议先完成检查再提交。"
+          }
+        ]
+      }
+    ]
+  }
+}

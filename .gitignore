@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+eggs/
+
+# 虚拟环境
+venv/
+venv_new/
+.venv/
+env/
+
+# 环境变量（含 API Key，必须排除！）
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+logs/
+
+# 测试覆盖率
+htmlcov/
+.coverage
+.pytest_cache/
+
+# 运行时数据（不应提交）
+chroma_data/
+uploads/
+
+# Node.js
+node_modules/
+package-lock.json

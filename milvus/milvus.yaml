@@ -1,0 +1,70 @@
+# Milvus 单机版配置文件
+# 使用嵌入式etcd，无需单独部署
+
+etcd:
+  endpoints:
+    - localhost:2379
+  rootPath: by-dev
+  subPath: meta
+  kvSubPath: kv
+
+minio:
+  address: localhost
+  port: 9000
+  accessKeyID: minioadmin
+  secretAccessKey: minioadmin
+  useSSL: false
+  bucketName: a-bucket
+  rootPath: files
+
+mq:
+  type: rocksmq
+
+rocksmq:
+  path: /var/lib/milvus/rdb_data
+  rocksmqPageSize: 2147483648
+  retentionTimeInMinutes: 7200
+  retentionSizeInMB: 7680
+
+dataCoord:
+  segment:
+    maxSize: 512
+    sealProportion: 0.25
+
+dataNode:
+  memory:
+    forceSyncEnable: true
+    forceSyncSegmentSize: 10485760
+
+indexCoord:
+  scheduler:
+    interval: 1000
+
+proxy:
+  port: 19530
+  internalPort: 19531
+
+queryNode:
+  cacheSize: 32
+
+rootCoord:
+  dmlChannelNum: 256
+  minSegmentSizeToEnableIndex: 1024
+
+common:
+  defaultPartitionName: _default
+  defaultIndexName: _default_idx
+  entityExpiration: -1
+  indexSliceSize: 16
+  threadCoreCoefficient:
+    highPriority: 10
+    middlePriority: 5
+    lowPriority: 1
+  DiskIndex:
+    MaxDegree: 56
+    SearchListSize: 100
+    PQCodeBudgetGBRatio: 0.125
+    BuildNumThreadsRatio: 1
+    SearchCacheBudgetGBRatio: 0.1
+    LoadNumThreadsRatio: 8
+    BeamWidthRatio: 4
