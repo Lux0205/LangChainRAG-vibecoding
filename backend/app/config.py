@@ -12,14 +12,14 @@ class Settings(BaseSettings):
     # ==================== 应用基础 ====================
     APP_NAME: str = "LangChain RAG 知识库问答系统"
     APP_VERSION: str = "1.0.0"
-    DEBUG: bool = True
+    DEBUG: bool = False  # 生产环境默认关闭调试
     API_PREFIX: str = "/api"
 
     # ==================== MySQL ====================
     MYSQL_HOST: str = "localhost"
     MYSQL_PORT: int = 3306
     MYSQL_USER: str = "root"
-    MYSQL_PASSWORD: str = ""
+    MYSQL_PASSWORD: str  # 强制从环境变量读取，不设默认值
     MYSQL_DATABASE: str = "rag_db"
 
     # ==================== Redis ====================
@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     CHROMA_DIR: str = "../chroma_data"
 
     # ==================== JWT ====================
-    JWT_SECRET_KEY: str = ""
+    JWT_SECRET_KEY: str  # 强制从环境变量读取
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
@@ -72,6 +72,12 @@ class Settings(BaseSettings):
     # ==================== 限流 ====================
     RATE_LIMIT_PER_MINUTE: int = 30
 
+    # ==================== 性能配置 ====================
+    # 注意：pool_size=15 + max_overflow=35 = 50/worker
+    # 总峰值连接 = UVICORN_WORKERS × 50，需 < MySQL max_connections(默认151)
+    UVICORN_WORKERS: int = 2         # uvicorn worker 进程数（Windows建议1-2）
+    UVICORN_LIMIT_CONCURRENCY: int = 80   # 最大并发连接数（≤ pool_size × workers × 0.8）
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
@@ -94,8 +100,9 @@ settings = Settings()
 # JWT 密钥：未配置时生成随机密钥（每次重启会失效，生产环境请设置 JWT_SECRET_KEY 环境变量）
 if not settings.JWT_SECRET_KEY:
     import secrets
+    import logging
     settings.JWT_SECRET_KEY = secrets.token_hex(32)
-    print("[警告] JWT_SECRET_KEY 未设置，已生成随机密钥。请设置环境变量以保证 Token 跨重启有效。")
+    logging.warning("[安全] JWT_SECRET_KEY 未设置，已生成随机密钥。请设置环境变量以保证 Token 跨重启有效。")
 
 # 确保上传目录存在
 os.makedirs(settings.UPLOAD_DIR, exist_ok=True)

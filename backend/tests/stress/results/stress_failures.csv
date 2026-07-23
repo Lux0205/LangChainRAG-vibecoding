@@ -1,0 +1,7 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,/api/chat/sessions/[id]/messages,RemoteDisconnected('Remote end closed connection without response'),1,2026-07-21T09:32:38Z,2026-07-21T09:32:38Z
+GET,/api/chat/sessions,RemoteDisconnected('Remote end closed connection without response'),1,2026-07-21T09:32:05Z,2026-07-21T09:32:05Z
+POST,/api/auth/login,CatchResponseError('登录失败: 0 - '),64,2026-07-21T09:32:14Z,2026-07-21T09:32:20Z
+POST,/api/chat/sessions,CatchResponseError('创建会话失败: 0'),1,2026-07-21T09:31:52Z,2026-07-21T09:31:52Z
+GET,/api/chat/sessions/[id]/messages,"ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)",1,2026-07-21T09:32:32Z,2026-07-21T09:32:32Z
+POST,/api/chat/chat,CatchResponseError('HTTP 0'),5,2026-07-21T09:32:14Z,2026-07-21T09:32:32Z
